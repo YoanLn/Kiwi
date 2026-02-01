@@ -33,6 +33,7 @@ Note: Le site doit couvrir deux vues distinctes : la vue client et la vue assure
 ## Tech Stack
 
 ### Frontend
+
 - React 18 + TypeScript
 - Vite
 - TailwindCSS (for minimalist styling)
@@ -40,6 +41,7 @@ Note: Le site doit couvrir deux vues distinctes : la vue client et la vue assure
 - Axios for API calls
 
 ### Backend
+
 - Python 3.11+
 - FastAPI
 - Google Cloud Vertex AI
@@ -47,6 +49,7 @@ Note: Le site doit couvrir deux vues distinctes : la vue client et la vue assure
 - SQLAlchemy (for database)
 
 ### Cloud & AI
+
 - Google Cloud Platform
 - Vertex AI for document analysis and RAG
 - Cloud Storage for document uploads
@@ -75,6 +78,7 @@ LunatiX/
 ## Setup
 
 ### Backend
+
 ```bash
 cd backend
 python -m venv venv
@@ -84,6 +88,7 @@ uvicorn app.main:app --reload
 ```
 
 ### Frontend
+
 ```bash
 cd frontend
 npm install
@@ -95,6 +100,7 @@ npm run dev
 Create `.env` files in both backend and frontend directories:
 
 ### Backend `.env`
+
 ```
 GOOGLE_CLOUD_PROJECT=your-project-id
 VERTEX_AI_LOCATION=us-central1
@@ -103,6 +109,7 @@ DATABASE_URL=sqlite:///./insurance.db
 ```
 
 ### Frontend `.env`
+
 ```
 VITE_API_URL=http://localhost:8000
 ```
