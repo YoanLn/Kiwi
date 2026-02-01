@@ -7,6 +7,13 @@ python-multipart>=0.0.6
 google-cloud-aiplatform>=1.42.0
 google-cloud-storage>=2.14.0
 google-generativeai>=0.3.0
+google-genai>=0.6.0
+google-cloud-discoveryengine>=0.13.0  # Vertex AI Search
+
+# LangChain & LangGraph for multi-agent document validation
+langgraph>=0.2.0
+langchain-google-vertexai>=2.0.0
+langchain-core>=0.3.0
 
 # Database
 sqlalchemy>=2.0.25
@@ -27,3 +34,6 @@ pytesseract>=0.3.10
 
 # HTTP client
 httpx>=0.26.0
+
+# Cloud Run / Production
+gunicorn>=21.0.0

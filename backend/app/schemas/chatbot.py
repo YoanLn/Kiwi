@@ -4,7 +4,11 @@ from datetime import datetime
 
 
 class ChatRequest(BaseModel):
-    user_id: str
+    """
+    Chat request schema.
+    Note: user_id is NOT in request body - it comes from JWT auth token.
+    This is a critical security measure.
+    """
     message: str
     session_id: Optional[str] = None
 

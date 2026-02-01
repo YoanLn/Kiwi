@@ -1,0 +1,92 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: lunatix-backend
+  labels:
+    cloud.googleapis.com/location: europe-west1
+  annotations:
+    run.googleapis.com/ingress: all
+    run.googleapis.com/launch-stage: GA
+spec:
+  template:
+    metadata:
+      annotations:
+        # Scaling configuration
+        autoscaling.knative.dev/minScale: "0"
+        autoscaling.knative.dev/maxScale: "10"
+        # CPU allocation (always-on for better latency)
+        run.googleapis.com/cpu-throttling: "false"
+        # Startup CPU boost for faster cold starts
+        run.googleapis.com/startup-cpu-boost: "true"
+    spec:
+      containerConcurrency: 80
+      timeoutSeconds: 300
+      serviceAccountName: lunatix-backend-sa@${PROJECT_ID}.iam.gserviceaccount.com
+      containers:
+        - image: europe-west1-docker.pkg.dev/${PROJECT_ID}/lunatix/backend:latest
+          ports:
+            - containerPort: 8080
+          resources:
+            limits:
+              cpu: "2"
+              memory: "2Gi"
+          env:
+            # Google Cloud Configuration
+            - name: GOOGLE_CLOUD_PROJECT
+              value: "${PROJECT_ID}"
+            - name: VERTEX_AI_LOCATION
+              value: "europe-west1"
+            - name: GCS_BUCKET_NAME
+              value: "${PROJECT_ID}-lunatix-documents"
+
+            # Vertex AI Search Configuration (EU)
+            - name: VERTEX_AI_SEARCH_LOCATION
+              value: "eu"
+            - name: VERTEX_AI_SEARCH_DATASTORE_ID
+              value: "lunatix-insurance-docs"
+            - name: VERTEX_AI_SEARCH_ENGINE_ID
+              value: "lunatix-search-engine"
+            - name: ENABLE_VERTEX_SEARCH
+              value: "true"
+            - name: ENABLE_DOCUMENT_INDEXING
+              value: "true"
+
+            # Application Configuration
+            - name: DEBUG
+              value: "false"
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: database-url
+                  key: latest
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: secret-key
+                  key: latest
+
+            # CORS - Update with your frontend domain
+            - name: BACKEND_CORS_ORIGINS
+              value: '["https://lunatix.example.com", "https://www.lunatix.example.com"]'
+
+          startupProbe:
+            httpGet:
+              path: /api/v1/health
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            failureThreshold: 3
+
+          livenessProbe:
+            httpGet:
+              path: /api/v1/health
+              port: 8080
+            periodSeconds: 30
+            failureThreshold: 3
+
+          readinessProbe:
+            httpGet:
+              path: /api/v1/health
+              port: 8080
+            periodSeconds: 10
+            failureThreshold: 3
