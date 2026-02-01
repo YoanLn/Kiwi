@@ -1,4 +1,4 @@
-# LunatiX - Insurance Claims Platform
+# Kiwi
 
 AI-powered insurance claims management platform with document verification, claims tracking, and intelligent chatbot support.
 
@@ -9,26 +9,6 @@ AI-powered insurance claims management platform with document verification, clai
 - **Intelligent Chatbot**: RAG-powered chatbot using Vertex AI to explain insurance terminology and answer questions
 - **Minimalist UI/UX**: Clean, intuitive interface for easy navigation
 
-## Checklist
-
-Note: Le site doit couvrir deux vues distinctes : la vue client et la vue assureur.
-
-### Côté client
-
-- [ ] Éviter le jargon : réponse séparée en deux (réponse formelle avec renvoi à un document + réponse simplifiée et compréhensible)
-- [ ] Possibilité de cliquer sur un mot pour renvoyer à une définition ou demander directement au chatbot ce que ça signifie
-- [ ] Voice input + audio summaries (le chatbot regarde où en sont les claims ou d'autres features)
-- [ ] Photo-first claims
-- [ ] Draft offline
-- [ ] Claim summary card
-- [ ] Version application mobile
-
-### Côté assureur
-
-- [ ] Checklist manuellement ajoutée par l'assureur (peut-être automatisée basée sur la documentation)
-- [ ] Auto triage (classify claim type severity, if the user seemed very angry / stressed)
-- [ ] Vérification de documents (detect missing fields, blurry images, wrong doc type)
-- [ ] Peut-être dans le futur : détection de fraude + one-tap approvals for low-risk claims (based on thresholds and policy rules)
 
 ## Tech Stack
 
