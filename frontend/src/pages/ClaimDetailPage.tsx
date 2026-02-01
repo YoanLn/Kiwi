@@ -50,7 +50,7 @@ export default function ClaimDetailPage() {
 
   const handleFileUpload = async () => {
     if (!selectedFile || !selectedDocType) {
-      setError('Please select a file and document type')
+      setError('Veuillez selectionner un fichier et un type de document')
       return
     }
 
@@ -67,15 +67,27 @@ export default function ClaimDetailPage() {
       await loadDocuments()
       await loadClaim()
     } catch (err) {
-      setError('Failed to upload document')
+      setError('Impossible d\'importer le document')
       console.error(err)
     } finally {
       setUploading(false)
     }
   }
 
+  const claimTypeLabels: Record<string, string> = {
+    health: 'Sante',
+    auto: 'Auto',
+    home: 'Habitation',
+    life: 'Vie',
+    travel: 'Voyage',
+    other: 'Autre',
+  }
+
+  const formatClaimType = (claimType: string) =>
+    claimTypeLabels[claimType] ?? claimType.replace('_', ' ')
+
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
+    return new Date(dateString).toLocaleDateString('fr-FR', {
       year: 'numeric',
       month: 'short',
       day: 'numeric',
@@ -83,6 +95,12 @@ export default function ClaimDetailPage() {
       minute: '2-digit',
     })
   }
+
+  const formatCurrency = (amount: number) =>
+    new Intl.NumberFormat('fr-FR', {
+      style: 'currency',
+      currency: 'USD',
+    }).format(amount)
 
   const getVerificationIcon = (doc: Document) => {
     switch (doc.verification_status) {
@@ -101,20 +119,20 @@ export default function ClaimDetailPage() {
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Card>
-          <div className="text-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto"></div>
-            <p className="mt-4 text-gray-600">Loading claim...</p>
-          </div>
-        </Card>
-      </div>
-    )
-  }
+            <div className="text-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto"></div>
+              <p className="mt-4 text-gray-600">Chargement du sinistre...</p>
+            </div>
+          </Card>
+        </div>
+      )
+    }
 
   if (!claim) {
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Card className="border-red-200 bg-red-50">
-          <p className="text-red-600">Claim not found</p>
+          <p className="text-red-600">Sinistre introuvable</p>
         </Card>
       </div>
     )
@@ -132,26 +150,26 @@ export default function ClaimDetailPage() {
             <Badge status={claim.status} />
           </div>
           <div className="text-right">
-            <p className="text-sm text-gray-500">Filed on</p>
+            <p className="text-sm text-gray-500">Declare le</p>
             <p className="text-gray-900 font-medium">{formatDate(claim.created_at)}</p>
           </div>
         </div>
 
         <div className="grid md:grid-cols-3 gap-6 mt-6">
           <div>
-            <p className="text-sm text-gray-500">Claim Type</p>
+            <p className="text-sm text-gray-500">Type de sinistre</p>
             <p className="text-gray-900 font-medium capitalize">
-              {claim.claim_type.replace('_', ' ')}
+              {formatClaimType(claim.claim_type)}
             </p>
           </div>
           <div>
-            <p className="text-sm text-gray-500">Claim Amount</p>
+            <p className="text-sm text-gray-500">Montant du sinistre</p>
             <p className="text-gray-900 font-medium">
-              ${claim.claim_amount.toFixed(2)}
+              {formatCurrency(claim.claim_amount)}
             </p>
           </div>
           <div>
-            <p className="text-sm text-gray-500">Last Updated</p>
+            <p className="text-sm text-gray-500">Derniere mise a jour</p>
             <p className="text-gray-900 font-medium">
               {formatDate(claim.updated_at)}
             </p>
@@ -174,33 +192,33 @@ export default function ClaimDetailPage() {
         {/* Upload Documents */}
         <Card>
           <h2 className="text-xl font-semibold text-gray-900 mb-4">
-            Upload Documents
+            Importer des documents
           </h2>
 
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Document Type
+                Type de document
               </label>
               <select
                 value={selectedDocType}
                 onChange={(e) => setSelectedDocType(e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
               >
-                <option value="">Select document type</option>
-                <option value={DocumentType.IDENTITY}>Identity Document</option>
-                <option value={DocumentType.MEDICAL_REPORT}>Medical Report</option>
-                <option value={DocumentType.INVOICE}>Invoice/Receipt</option>
-                <option value={DocumentType.POLICE_REPORT}>Police Report</option>
-                <option value={DocumentType.PROOF_OF_OWNERSHIP}>Proof of Ownership</option>
+                <option value="">Selectionnez un type de document</option>
+                <option value={DocumentType.IDENTITY}>Piece d'identite</option>
+                <option value={DocumentType.MEDICAL_REPORT}>Rapport medical</option>
+                <option value={DocumentType.INVOICE}>Facture/Recu</option>
+                <option value={DocumentType.POLICE_REPORT}>Rapport de police</option>
+                <option value={DocumentType.PROOF_OF_OWNERSHIP}>Preuve de propriete</option>
                 <option value={DocumentType.PHOTOS}>Photos</option>
-                <option value={DocumentType.OTHER}>Other</option>
+                <option value={DocumentType.OTHER}>Autre</option>
               </select>
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Select File
+                Selectionnez un fichier
               </label>
               <input
                 type="file"
@@ -223,11 +241,11 @@ export default function ClaimDetailPage() {
               className="w-full"
             >
               <Upload className="w-4 h-4 mr-2" />
-              Upload & Verify Document
+              Importer et verifier le document
             </Button>
 
             <p className="text-xs text-gray-500">
-              Supported formats: JPG, PNG, PDF. Our AI will automatically verify your document.
+              Formats acceptes : JPG, PNG, PDF. Notre IA verifiera automatiquement votre document.
             </p>
           </div>
         </Card>
@@ -235,13 +253,13 @@ export default function ClaimDetailPage() {
         {/* Documents List */}
         <Card>
           <h2 className="text-xl font-semibold text-gray-900 mb-4">
-            Uploaded Documents ({documents.length})
+            Documents importes ({documents.length})
           </h2>
 
           {documents.length === 0 ? (
             <div className="text-center py-8 text-gray-500">
               <FileText className="w-12 h-12 mx-auto mb-2 text-gray-400" />
-              <p>No documents uploaded yet</p>
+              <p>Aucun document importe pour le moment</p>
             </div>
           ) : (
             <div className="space-y-3">
@@ -267,7 +285,7 @@ export default function ClaimDetailPage() {
                   {doc.confidence_score !== null && (
                     <div className="mb-2">
                       <div className="flex items-center justify-between text-xs text-gray-600 mb-1">
-                        <span>Confidence</span>
+                        <span>Confiance</span>
                         <span>{doc.confidence_score}%</span>
                       </div>
                       <div className="w-full bg-gray-200 rounded-full h-1.5">
@@ -292,7 +310,7 @@ export default function ClaimDetailPage() {
                   )}
 
                   <p className="text-xs text-gray-500 mt-2">
-                    Uploaded {formatDate(doc.uploaded_at)}
+                    Importe le {formatDate(doc.uploaded_at)}
                   </p>
                 </div>
               ))}

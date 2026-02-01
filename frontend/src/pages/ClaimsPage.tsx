@@ -25,15 +25,27 @@ export default function ClaimsPage() {
       const data = await claimsApi.getByUser(userId)
       setClaims(data)
     } catch (err) {
-      setError('Failed to load claims')
+      setError('Impossible de charger les sinistres')
       console.error(err)
     } finally {
       setLoading(false)
     }
   }
 
+  const claimTypeLabels: Record<string, string> = {
+    health: 'Sante',
+    auto: 'Auto',
+    home: 'Habitation',
+    life: 'Vie',
+    travel: 'Voyage',
+    other: 'Autre',
+  }
+
+  const formatClaimType = (claimType: string) =>
+    claimTypeLabels[claimType] ?? claimType.replace('_', ' ')
+
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
+    return new Date(dateString).toLocaleDateString('fr-FR', {
       year: 'numeric',
       month: 'short',
       day: 'numeric',
@@ -41,7 +53,7 @@ export default function ClaimsPage() {
   }
 
   const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-US', {
+    return new Intl.NumberFormat('fr-FR', {
       style: 'currency',
       currency: 'USD',
     }).format(amount)
@@ -52,15 +64,15 @@ export default function ClaimsPage() {
       {/* Header */}
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">My Claims</h1>
+          <h1 className="text-3xl font-bold text-gray-900">Mes sinistres</h1>
           <p className="text-gray-600 mt-1">
-            View and manage all your insurance claims
+            Consultez et gerez tous vos sinistres d'assurance
           </p>
         </div>
         <Link to="/claims/new">
           <Button>
             <Plus className="w-4 h-4 mr-2" />
-            New Claim
+            Nouveau sinistre
           </Button>
         </Link>
       </div>
@@ -70,7 +82,7 @@ export default function ClaimsPage() {
         <Card>
           <div className="text-center py-12">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto"></div>
-            <p className="mt-4 text-gray-600">Loading claims...</p>
+            <p className="mt-4 text-gray-600">Chargement des sinistres...</p>
           </div>
         </Card>
       )}
@@ -88,13 +100,13 @@ export default function ClaimsPage() {
           <div className="text-center py-12">
             <FileText className="w-16 h-16 text-gray-400 mx-auto mb-4" />
             <h3 className="text-lg font-medium text-gray-900 mb-2">
-              No claims yet
+              Aucun sinistre pour le moment
             </h3>
             <p className="text-gray-600 mb-6">
-              Get started by filing your first claim
+              Commencez en declarant votre premier sinistre
             </p>
             <Link to="/claims/new">
-              <Button>File a Claim</Button>
+              <Button>Declarer un sinistre</Button>
             </Link>
           </div>
         </Card>
@@ -127,7 +139,7 @@ export default function ClaimsPage() {
                         {formatCurrency(claim.claim_amount)}
                       </span>
                       <span className="capitalize">
-                        {claim.claim_type.replace('_', ' ')}
+                        {formatClaimType(claim.claim_type)}
                       </span>
                     </div>
 

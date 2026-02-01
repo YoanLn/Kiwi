@@ -4,18 +4,19 @@ import { chatbotApi } from '../services/api'
 import { useVoiceChat } from '../hooks/useVoiceChat'
 import Card from '../components/Card'
 import Button from '../components/Button'
+import type { ChatSource } from '../types'
 
 interface Message {
   role: 'user' | 'assistant'
   content: string
-  sources?: string[]
+  sources?: ChatSource[]
 }
 
 export default function ChatbotPage() {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: 'assistant',
-      content: "Hello! I'm your insurance assistant. I can help explain insurance terms, answer questions about the claims process, and guide you through your policy. What would you like to know?",
+      content: "Bonjour ! Je suis votre assistant d'assurance Kiwi. Je peux expliquer les termes d'assurance, repondre aux questions sur le processus de sinistre, et vous guider dans votre contrat. Que souhaitez-vous savoir ?",
     },
   ])
   const [input, setInput] = useState('')
@@ -55,7 +56,7 @@ export default function ChatbotPage() {
       ])
     } catch (err) {
       console.error('Failed to send message:', err)
-      appendMessage('assistant', 'Sorry, I encountered an error. Please try again.')
+      appendMessage('assistant', 'Desole, une erreur est survenue. Veuillez reessayer.')
     } finally {
       loadingRef.current = false
       setLoading(false)
@@ -102,26 +103,26 @@ export default function ChatbotPage() {
   }
 
   const suggestedQuestions = [
-    "What is a deductible?",
-    "How long does the claims process take?",
-    "What documents do I need to submit?",
-    "What does 'copay' mean?",
+    "Qu'est-ce qu'une franchise ?",
+    "Combien de temps dure le traitement d'un sinistre ?",
+    "Quels documents dois-je fournir ?",
+    "Que signifie 'copay' ?",
   ]
 
   const voiceActive = voiceStatus === 'ready' || voiceStatus === 'connecting'
   const voiceLabel =
     voiceStatus === 'ready'
-      ? 'Listening'
+      ? 'Ecoute'
       : voiceStatus === 'connecting'
-      ? 'Connecting'
-      : 'Off'
+      ? 'Connexion'
+      : 'Desactive'
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-gray-900">Insurance Assistant</h1>
+        <h1 className="text-3xl font-bold text-gray-900">Assistant Kiwi</h1>
         <p className="text-gray-600 mt-1">
-          Ask me anything about insurance terms, claims, or your policy
+          Posez-moi vos questions sur les termes d'assurance, les sinistres ou votre contrat
         </p>
       </div>
 
@@ -152,16 +153,33 @@ export default function ChatbotPage() {
 
                 {message.sources && message.sources.length > 0 && (
                   <div className="mt-2 pt-2 border-t border-gray-300">
-                    <p className="text-xs text-gray-600 mb-1">Sources:</p>
+                    <p className="text-xs text-gray-600 mb-1">Sources :</p>
                     <div className="flex flex-wrap gap-1">
-                      {message.sources.map((source, idx) => (
-                        <span
-                          key={idx}
-                          className="inline-block px-2 py-0.5 bg-gray-200 rounded text-xs text-gray-700"
-                        >
-                          {source}
-                        </span>
-                      ))}
+                      {message.sources.map((source, idx) => {
+                        const label = source.label
+                        const url = source.url || ''
+                        if (url) {
+                          return (
+                            <a
+                              key={idx}
+                              href={url}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="inline-block px-2 py-0.5 bg-gray-200 rounded text-xs text-gray-700 hover:text-primary-700 hover:underline"
+                            >
+                              {label}
+                            </a>
+                          )
+                        }
+                        return (
+                          <span
+                            key={idx}
+                            className="inline-block px-2 py-0.5 bg-gray-200 rounded text-xs text-gray-700"
+                          >
+                            {label}
+                          </span>
+                        )
+                      })}
                     </div>
                   </div>
                 )}
@@ -196,7 +214,7 @@ export default function ChatbotPage() {
         {/* Suggested Questions (show only at start) */}
         {messages.length === 1 && (
           <div className="px-6 pb-4">
-            <p className="text-sm text-gray-600 mb-2">Suggested questions:</p>
+            <p className="text-sm text-gray-600 mb-2">Questions proposees :</p>
             <div className="flex flex-wrap gap-2">
               {suggestedQuestions.map((question, idx) => (
                 <button
@@ -224,7 +242,7 @@ export default function ChatbotPage() {
                     : 'bg-gray-300'
                 }`}
               />
-              <span>Voice: {voiceLabel}</span>
+              <span>Micro : {voiceLabel}</span>
             </div>
             {voiceError && <span className="text-red-500">{voiceError}</span>}
           </div>
@@ -234,7 +252,7 @@ export default function ChatbotPage() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder="Ask a question about insurance..."
+              placeholder="Posez une question sur l'assurance..."
               className="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
               disabled={loading}
             />
@@ -245,7 +263,7 @@ export default function ChatbotPage() {
                   ? 'bg-emerald-500 text-white border-emerald-500 hover:bg-emerald-600'
                   : 'bg-white text-gray-600 border-gray-300 hover:bg-gray-100'
               }`}
-              aria-label={voiceActive ? 'Stop voice' : 'Start voice'}
+              aria-label={voiceActive ? 'Arreter le micro' : 'Demarrer le micro'}
             >
               {voiceActive ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
             </button>

@@ -55,11 +55,16 @@ export interface Document {
   verified_at: string | null
 }
 
+export interface ChatSource {
+  label: string
+  url?: string | null
+}
+
 export interface ChatMessage {
   session_id: string
   message: string
   response: string
-  sources: string[]
+  sources: ChatSource[]
   timestamp: string
 }
 

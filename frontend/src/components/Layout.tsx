@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+﻿import type { ReactNode } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { FileText, Home } from 'lucide-react'
 import ChatbotWidget from './ChatbotWidget'
@@ -20,9 +20,9 @@ export default function Layout({ children }: LayoutProps) {
           <div className="flex justify-between items-center h-16">
             <Link to="/" className="flex items-center space-x-2">
               <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-lg">L</span>
+                <span className="text-white font-bold text-lg">A</span>
               </div>
-              <span className="text-xl font-semibold text-gray-900">LunatiX</span>
+              <span className="text-xl font-semibold text-gray-900">Assurance</span>
             </Link>
 
             <nav className="flex space-x-8">
@@ -35,7 +35,7 @@ export default function Layout({ children }: LayoutProps) {
                 }`}
               >
                 <Home className="w-4 h-4" />
-                <span>Home</span>
+                <span>Accueil</span>
               </Link>
 
               <Link
@@ -47,7 +47,7 @@ export default function Layout({ children }: LayoutProps) {
                 }`}
               >
                 <FileText className="w-4 h-4" />
-                <span>Claims</span>
+                <span>Sinistres</span>
               </Link>
             </nav>
           </div>
@@ -66,7 +66,7 @@ export default function Layout({ children }: LayoutProps) {
       <footer className="bg-white border-t border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <p className="text-center text-sm text-gray-500">
-            © 2024 LunatiX Insurance Platform. All rights reserved.
+            (c) 2024 Kiwi - Plateforme de gestion des sinistres. Tous droits reserves.
           </p>
         </div>
       </footer>

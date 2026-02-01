@@ -2,11 +2,12 @@ import { useState, useRef, useEffect, type KeyboardEvent } from 'react'
 import { Send, Bot, User, X, MessageCircle, Mic, MicOff } from 'lucide-react'
 import { chatbotApi } from '../services/api'
 import { useVoiceChat } from '../hooks/useVoiceChat'
+import type { ChatSource } from '../types'
 
 interface Message {
   role: 'user' | 'assistant'
   content: string
-  sources?: string[]
+  sources?: ChatSource[]
 }
 
 export default function ChatbotWidget() {
@@ -14,7 +15,7 @@ export default function ChatbotWidget() {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: 'assistant',
-      content: "Hello! I'm your insurance assistant. I can help explain insurance terms, answer questions about the claims process, and guide you through your policy. What would you like to know?",
+      content: "Bonjour ! Je suis votre assistant d'assurance Kiwi. Je peux expliquer les termes d'assurance, repondre aux questions sur le processus de sinistre, et vous guider dans votre contrat. Que souhaitez-vous savoir ?",
     },
   ])
   const [input, setInput] = useState('')
@@ -54,7 +55,7 @@ export default function ChatbotWidget() {
       ])
     } catch (err) {
       console.error('Failed to send message:', err)
-      appendMessage('assistant', 'Sorry, I encountered an error. Please try again.')
+      appendMessage('assistant', 'Desole, une erreur est survenue. Veuillez reessayer.')
     } finally {
       loadingRef.current = false
       setLoading(false)
@@ -109,18 +110,18 @@ export default function ChatbotWidget() {
   }
 
   const suggestedQuestions = [
-    "What is a deductible?",
-    "How long does the claims process take?",
-    "What documents do I need?",
+    "Qu'est-ce qu'une franchise ?",
+    "Combien de temps dure le traitement d'un sinistre ?",
+    "Quels documents dois-je fournir ?",
   ]
 
   const voiceActive = voiceStatus === 'ready' || voiceStatus === 'connecting'
   const voiceLabel =
     voiceStatus === 'ready'
-      ? 'Listening'
+      ? 'Ecoute'
       : voiceStatus === 'connecting'
-      ? 'Connecting'
-      : 'Off'
+      ? 'Connexion'
+      : 'Desactive'
 
   return (
     <>
@@ -134,8 +135,8 @@ export default function ChatbotWidget() {
                 <Bot className="w-6 h-6 text-primary-600" />
               </div>
               <div>
-                <h3 className="font-semibold">Insurance Assistant</h3>
-                <p className="text-xs text-primary-100">Always here to help</p>
+                <h3 className="font-semibold">Assistant Kiwi</h3>
+                <p className="text-xs text-primary-100">Toujours la pour vous aider</p>
               </div>
             </div>
             <button
@@ -172,16 +173,33 @@ export default function ChatbotWidget() {
 
                   {message.sources && message.sources.length > 0 && (
                     <div className="mt-2 pt-2 border-t border-gray-200">
-                      <p className="text-xs text-gray-500 mb-1">Sources:</p>
+                      <p className="text-xs text-gray-500 mb-1">Sources :</p>
                       <div className="flex flex-wrap gap-1">
-                        {message.sources.map((source, idx) => (
-                          <span
-                            key={idx}
-                            className="inline-block px-2 py-0.5 bg-gray-100 rounded text-xs text-gray-600"
-                          >
-                            {source}
-                          </span>
-                        ))}
+                        {message.sources.map((source, idx) => {
+                          const label = source.label
+                          const url = source.url || ''
+                          if (url) {
+                            return (
+                              <a
+                                key={idx}
+                                href={url}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="inline-block px-2 py-0.5 bg-gray-100 rounded text-xs text-gray-600 hover:text-primary-700 hover:underline"
+                              >
+                                {label}
+                              </a>
+                            )
+                          }
+                          return (
+                            <span
+                              key={idx}
+                              className="inline-block px-2 py-0.5 bg-gray-100 rounded text-xs text-gray-600"
+                            >
+                              {label}
+                            </span>
+                          )
+                        })}
                       </div>
                     </div>
                   )}
@@ -216,7 +234,7 @@ export default function ChatbotWidget() {
           {/* Suggested Questions (show only at start) */}
           {messages.length === 1 && (
             <div className="px-4 pb-2 bg-gray-50">
-              <p className="text-xs text-gray-600 mb-2">Try asking:</p>
+              <p className="text-xs text-gray-600 mb-2">Essayez de demander :</p>
               <div className="flex flex-col gap-1">
                 {suggestedQuestions.map((question, idx) => (
                   <button
@@ -244,7 +262,7 @@ export default function ChatbotWidget() {
                       : 'bg-gray-300'
                   }`}
                 />
-                <span>Voice: {voiceLabel}</span>
+                <span>Micro : {voiceLabel}</span>
               </div>
               {voiceError && <span className="text-red-500">{voiceError}</span>}
             </div>
@@ -254,7 +272,7 @@ export default function ChatbotWidget() {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyPress={handleKeyPress}
-                placeholder="Ask about insurance..."
+                placeholder="Posez une question sur l'assurance..."
                 className="flex-1 px-4 py-2 border border-gray-300 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                 disabled={loading}
               />
@@ -265,7 +283,7 @@ export default function ChatbotWidget() {
                     ? 'bg-emerald-500 text-white border-emerald-500 hover:bg-emerald-600'
                     : 'bg-white text-gray-600 border-gray-300 hover:bg-gray-100'
                 }`}
-                aria-label={voiceActive ? 'Stop voice' : 'Start voice'}
+                aria-label={voiceActive ? 'Arreter le micro' : 'Demarrer le micro'}
               >
                 {voiceActive ? (
                   <MicOff className="w-5 h-5" />
@@ -289,7 +307,7 @@ export default function ChatbotWidget() {
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="fixed bottom-6 right-6 w-14 h-14 bg-primary-600 text-white rounded-full shadow-lg hover:bg-primary-700 transition-all hover:scale-110 flex items-center justify-center z-50"
-        aria-label="Open chat"
+        aria-label="Ouvrir le chat"
       >
         {isOpen ? (
           <X className="w-6 h-6" />

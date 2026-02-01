@@ -20,12 +20,12 @@ export default function NewClaimPage() {
   })
 
   const claimTypes = [
-    { value: 'health', label: 'Health Insurance' },
-    { value: 'auto', label: 'Auto Insurance' },
-    { value: 'home', label: 'Home Insurance' },
-    { value: 'life', label: 'Life Insurance' },
-    { value: 'travel', label: 'Travel Insurance' },
-    { value: 'other', label: 'Other' },
+    { value: 'health', label: 'Assurance sante' },
+    { value: 'auto', label: 'Assurance auto' },
+    { value: 'home', label: 'Assurance habitation' },
+    { value: 'life', label: 'Assurance vie' },
+    { value: 'travel', label: 'Assurance voyage' },
+    { value: 'other', label: 'Autre' },
   ]
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -33,7 +33,7 @@ export default function NewClaimPage() {
     setError(null)
 
     if (!formData.claim_type || !formData.description || !formData.claim_amount) {
-      setError('Please fill in all fields')
+      setError('Veuillez remplir tous les champs')
       return
     }
 
@@ -49,7 +49,7 @@ export default function NewClaimPage() {
       // Navigate to claim detail page
       navigate(`/claims/${claim.id}`)
     } catch (err) {
-      setError('Failed to create claim. Please try again.')
+      setError('Impossible de creer le sinistre. Veuillez reessayer.')
       console.error(err)
     } finally {
       setLoading(false)
@@ -59,9 +59,9 @@ export default function NewClaimPage() {
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">File a New Claim</h1>
+        <h1 className="text-3xl font-bold text-gray-900">Declarer un nouveau sinistre</h1>
         <p className="text-gray-600 mt-1">
-          Provide details about your claim to get started
+          Fournissez les details de votre sinistre pour commencer
         </p>
       </div>
 
@@ -70,7 +70,7 @@ export default function NewClaimPage() {
           {/* Claim Type */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Claim Type
+              Type de sinistre
             </label>
             <select
               value={formData.claim_type}
@@ -80,7 +80,7 @@ export default function NewClaimPage() {
               className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
               required
             >
-              <option value="">Select a claim type</option>
+              <option value="">Selectionnez un type de sinistre</option>
               {claimTypes.map((type) => (
                 <option key={type.value} value={type.value}>
                   {type.label}
@@ -101,14 +101,14 @@ export default function NewClaimPage() {
               }
               rows={4}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-              placeholder="Describe what happened and what you're claiming for..."
+              placeholder="Decrivez ce qui s'est passe et ce que vous demandez..."
               required
             />
           </div>
 
           {/* Claim Amount */}
           <Input
-            label="Claim Amount ($)"
+            label="Montant du sinistre ($)"
             type="number"
             step="0.01"
             min="0"
@@ -116,7 +116,7 @@ export default function NewClaimPage() {
             onChange={(e) =>
               setFormData({ ...formData, claim_amount: e.target.value })
             }
-            placeholder="0.00"
+            placeholder="0,00"
             required
           />
 
@@ -130,15 +130,15 @@ export default function NewClaimPage() {
           {/* Info Box */}
           <div className="p-4 bg-blue-50 border border-blue-200 rounded-md">
             <p className="text-sm text-blue-800">
-              After submitting, you'll be able to upload supporting documents for your claim.
-              Our AI will verify them automatically.
+              Apres l'envoi, vous pourrez importer des documents justificatifs pour votre sinistre.
+              Notre IA les verifiera automatiquement.
             </p>
           </div>
 
           {/* Submit Button */}
           <div className="flex gap-4">
             <Button type="submit" loading={loading} className="flex-1">
-              Submit Claim
+              Soumettre le sinistre
             </Button>
             <Button
               type="button"
@@ -146,7 +146,7 @@ export default function NewClaimPage() {
               onClick={() => navigate('/claims')}
               disabled={loading}
             >
-              Cancel
+              Annuler
             </Button>
           </div>
         </form>

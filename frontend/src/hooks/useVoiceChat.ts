@@ -55,7 +55,7 @@ export const useVoiceChat = ({
 
     const RecognitionClass = getSpeechRecognition()
     if (!RecognitionClass) {
-      const message = 'Speech recognition is not supported in this browser'
+      const message = "La reconnaissance vocale n'est pas prise en charge dans ce navigateur"
       setError(message)
       setStatus('error')
       onStatus?.('error', message)
@@ -63,7 +63,7 @@ export const useVoiceChat = ({
     }
 
     const recognition = new RecognitionClass()
-    recognition.lang = navigator.language || 'en-US'
+    recognition.lang = navigator.language || 'fr-FR'
     recognition.interimResults = true
     recognition.continuous = true
 
@@ -74,8 +74,8 @@ export const useVoiceChat = ({
 
     recognition.onerror = (event: any) => {
       const message = event?.error
-        ? `Speech recognition error: ${event.error}`
-        : 'Speech recognition error'
+        ? `Erreur de reconnaissance vocale : ${event.error}`
+        : 'Erreur de reconnaissance vocale'
       setError(message)
       setStatus('error')
       onStatus?.('error', message)
@@ -89,7 +89,7 @@ export const useVoiceChat = ({
         try {
           recognition.start()
         } catch {
-          const message = 'Speech recognition stopped unexpectedly'
+          const message = "La reconnaissance vocale s'est arretee de maniere inattendue"
           setError(message)
           setStatus('error')
           onStatus?.('error', message)
@@ -126,7 +126,7 @@ export const useVoiceChat = ({
     try {
       recognition.start()
     } catch {
-      const message = 'Failed to start speech recognition'
+      const message = 'Impossible de demarrer la reconnaissance vocale'
       setError(message)
       setStatus('error')
       onStatus?.('error', message)

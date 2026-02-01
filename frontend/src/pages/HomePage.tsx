@@ -9,18 +9,18 @@ export default function HomePage() {
       {/* Hero Section */}
       <div className="text-center mb-16">
         <h1 className="text-4xl font-bold text-gray-900 mb-4">
-          Simplify Your Insurance Claims
+          Simplifiez vos declarations de sinistre
         </h1>
         <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-          AI-powered platform to manage your insurance claims efficiently.
-          Upload documents, track status, and get instant help.
+          Plateforme propulsee par l'IA pour gerer vos declarations de sinistre efficacement.
+          Importez des documents, suivez le statut et obtenez de l'aide instantanement.
         </p>
         <div className="mt-8 flex justify-center gap-4">
           <Link to="/claims/new">
-            <Button size="lg">File a New Claim</Button>
+            <Button size="lg">Declarer un nouveau sinistre</Button>
           </Link>
           <Link to="/claims">
-            <Button size="lg" variant="outline">View My Claims</Button>
+            <Button size="lg" variant="outline">Voir mes sinistres</Button>
           </Link>
         </div>
       </div>
@@ -30,40 +30,40 @@ export default function HomePage() {
         <Card>
           <FileText className="w-12 h-12 text-primary-600 mb-4" />
           <h3 className="text-lg font-semibold text-gray-900 mb-2">
-            Easy Claim Filing
+            Declaration simple
           </h3>
           <p className="text-gray-600 text-sm">
-            Submit claims in minutes with our simple, guided process.
+            Declarez un sinistre en quelques minutes grace a notre parcours guide.
           </p>
         </Card>
 
         <Card>
           <Upload className="w-12 h-12 text-primary-600 mb-4" />
           <h3 className="text-lg font-semibold text-gray-900 mb-2">
-            AI Document Verification
+            Verification des documents par IA
           </h3>
           <p className="text-gray-600 text-sm">
-            Automatic verification of your documents using advanced AI technology.
+            Verification automatique de vos documents grace a une IA avancee.
           </p>
         </Card>
 
         <Card>
           <CheckCircle className="w-12 h-12 text-primary-600 mb-4" />
           <h3 className="text-lg font-semibold text-gray-900 mb-2">
-            Real-Time Tracking
+            Suivi en temps reel
           </h3>
           <p className="text-gray-600 text-sm">
-            Monitor your claim status and get updates at every step.
+            Suivez le statut de votre sinistre et recevez des mises a jour a chaque etape.
           </p>
         </Card>
 
         <Card>
           <MessageCircle className="w-12 h-12 text-primary-600 mb-4" />
           <h3 className="text-lg font-semibold text-gray-900 mb-2">
-            24/7 AI Assistant
+            Assistant IA 24/7
           </h3>
           <p className="text-gray-600 text-sm">
-            Get instant answers to your insurance questions anytime.
+            Obtenez des reponses instantanees a vos questions d'assurance a tout moment.
           </p>
         </Card>
       </div>
@@ -71,7 +71,7 @@ export default function HomePage() {
       {/* How It Works */}
       <div className="mb-16">
         <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">
-          How It Works
+          Comment ca marche
         </h2>
         <div className="grid md:grid-cols-3 gap-8">
           <div className="text-center">
@@ -79,10 +79,10 @@ export default function HomePage() {
               1
             </div>
             <h3 className="text-lg font-semibold text-gray-900 mb-2">
-              Submit Your Claim
+              Declarez votre sinistre
             </h3>
             <p className="text-gray-600 text-sm">
-              Provide claim details and upload required documents.
+              Fournissez les details du sinistre et importez les documents requis.
             </p>
           </div>
 
@@ -91,10 +91,10 @@ export default function HomePage() {
               2
             </div>
             <h3 className="text-lg font-semibold text-gray-900 mb-2">
-              AI Verification
+              Verification par IA
             </h3>
             <p className="text-gray-600 text-sm">
-              Our AI instantly verifies your documents for completeness.
+              Notre IA verifie instantanement la completude de vos documents.
             </p>
           </div>
 
@@ -103,10 +103,10 @@ export default function HomePage() {
               3
             </div>
             <h3 className="text-lg font-semibold text-gray-900 mb-2">
-              Get Approved
+              Obtenez l'approbation
             </h3>
             <p className="text-gray-600 text-sm">
-              Track your claim and receive payment once approved.
+              Suivez votre sinistre et recevez le paiement une fois approuve.
             </p>
           </div>
         </div>
@@ -116,15 +116,15 @@ export default function HomePage() {
       <Card className="bg-primary-50 border-primary-200">
         <div className="text-center">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">
-            Need Help Understanding Insurance Terms?
+            Besoin d'aide pour comprendre les termes d'assurance ?
           </h2>
           <p className="text-gray-600 mb-4">
-            Chat with our AI assistant to get instant explanations and answers.
+            Discutez avec notre assistant IA pour obtenir des explications et des reponses instantanees.
           </p>
           <div className="flex items-center justify-center gap-2 text-primary-700">
             <MessageCircle className="w-5 h-5" />
             <p className="text-sm font-medium">
-              Click the chat bubble in the bottom right corner to get started!
+              Cliquez sur la bulle de chat en bas a droite pour commencer !
             </p>
           </div>
         </div>
